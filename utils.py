@@ -8,11 +8,15 @@ def get_size():
     return rows, columns
 
 def clear():
-    subprocess.Popen( "cls" if platform.system() == "Windows" else "clear", shell=True)
+    if platform.system() == "Windows":
+        subprocess.call("cls", shell=True)
+    else:
+        subprocess.call("clear", shell=True)
 
 def cls():
-    print("\x1b[2J\x1b[H")
+    #print("\x1b[2J\x1b[H")
     #sys.stderr.write("\x1b[2J\x1b[H")
+    clear()
 
 def pause(msg='press return to continue...'):
     _ = input(msg)
