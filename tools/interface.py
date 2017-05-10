@@ -246,16 +246,22 @@ def battle_choose(default=''):
 
 def build_battle_scene(player, ai, width=35):
     '''draws the battle scene'''
-    ret = side_by_side(str(player), str(ai), width)
+    #ret = side_by_side(str(player), str(ai), width)
     #ret = '{} ({})  vs. {} ({})\n'.format(player.name, player.hp, ai.name, ai.hp)
     player_stats = get_hero_stats(player)
     ai_stats = get_hero_stats(ai)
-    ret += side_by_side(player_stats, ai_stats, size=width)
+    ret = ''
+    ret += str(player) + '\n'
+    ret += player_stats
+    ret += text_centre('vs.', width)
+    ret += str(ai) + '\n'
+    ret += ai_stats +'\n'
+    #ret += side_by_side(player_stats, ai_stats, size=width)
     player_avatar = build_hero_avatar(player)
     ai_avatar = build_hero_avatar(ai)
-    ret += side_by_side(text_centre(player_avatar, width), 
-                        text_centre(ai_avatar, width), 
-                        width)
+    ret += side_by_side(text_centre(player_avatar, width//2), 
+                        text_centre(ai_avatar, width//2),
+                        width//2)
     return ret
 
 
