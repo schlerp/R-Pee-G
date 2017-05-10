@@ -142,6 +142,10 @@ class Orc(Enemy):
         if randint(0,99) < 20:
             self.body.boots = items.armour.LeatherBoots()
             self.loot.append(items.armour.LeatherBoots())
+        # shield
+        if randint(0,99) < 20:
+            self.body.shield = items.armour.SmallShield()
+            self.loot.append(items.armour.SmallShield())
         # weapon
         weapon_roll = randint(0,99)
         if weapon_roll < 25:
@@ -157,7 +161,7 @@ class Orc(Enemy):
 
 class Golem(Enemy):
     '''A golem, occasional chainmail armour and stuff'''
-    def __init__(self, name='Golem', hp=100, loot=[]):
+    def __init__(self, name='Golem', hp=100, loot=None):
         super().__init__(name, hp, loot)
         self._randomise()
 
@@ -179,6 +183,10 @@ class Golem(Enemy):
         if randint(0,99) < 20:
             self.body.boots = items.armour.ChainmailBoots()
             self.loot.append(items.armour.ChainmailBoots())
+        # shield
+        if randint(0,99) < 20:
+            self.body.shield = items.armour.MidShield()
+            self.loot.append(items.armour.MidShield())
         # weapon
         weapon_roll = randint(0,99)
         if weapon_roll < 25:
@@ -190,16 +198,60 @@ class Golem(Enemy):
         # random chance to drop medpacks
         if randint(0,99) < 50:
             self.loot.append(items.consumables.BigMedkit(randint(1,2)))
-        
 
-class SimpleBoss(Enemy):
-    '''a big dog boss cunt with armour n weps for dayz'''
-    def __init__(self, name='Big boss', hp=200, loot=[]):
+
+class BlackKnight(Enemy):
+    '''A black knight, can have plate armour and harder weapons'''
+    def __init__(self, name='Black Knight', hp=150, loot=None):
         super().__init__(name, hp, loot)
         self._randomise()
 
     def _randomise(self):
-        self.hp = randint(150, 250)
+        self.hp = randint(100, 200)
+        # helmet
+        if randint(0,99) < 20:
+            self.body.head = items.armour.PlateHelmet()
+            self.loot.append(items.armour.PlateHelmet())
+        # chest
+        if randint(0,99) < 20:
+            self.body.chest = items.armour.PlateChest()
+            self.loot.append(items.armour.PlateChest())
+        # legs
+        if randint(0,99) < 20:
+            self.body.legs = items.armour.PlateLegs()
+            self.loot.append(items.armour.PlateLegs())
+        # boots
+        if randint(0,99) < 20:
+            self.body.boots = items.armour.PlateBoots()
+            self.loot.append(items.armour.PlateBoots())
+        # shield
+        if randint(0,99) < 20:
+            self.body.shield = items.armour.LargeShield()
+            self.loot.append(items.armour.LargeShield())
+        # weapon
+        weapon_roll = randint(0,99)
+        if weapon_roll < 50:
+            self.weapon = items.weapons.LongSword()
+            self.loot.append(items.weapons.LongSword())
+        elif weapon_roll < 90:
+            self.weapon = items.weapons.GreatSword()
+            self.loot.append(items.weapons.GreatSword())
+        else:
+            self.weapon = items.weapons.BastardSword()
+            self.loot.append(items.weapons.BastardSword())            
+        # random chance to drop medpacks
+        if randint(0,99) < 50:
+            self.loot.append(items.consumables.GoldenApple(randint(1,2)))
+        
+
+class SimpleBoss(Enemy):
+    '''a big dog boss cunt with armour n weps for dayz'''
+    def __init__(self, name='Big boss', hp=250, loot=None):
+        super().__init__(name, hp, loot)
+        self._randomise()
+
+    def _randomise(self):
+        self.hp = randint(200, 300)
         # helmet
         if randint(0,99) < 50:
             self.body.head = items.armour.PlateHelmet()
@@ -215,9 +267,9 @@ class SimpleBoss(Enemy):
         # weapon
         weapon_chance = randint(0,99)
         if weapon_chance < 80:
-            self.weapon = items.weapons.LongSword()
-        else:
             self.weapon = items.weapons.BastardSword()
+        else:
+            self.weapon = items.weapons.GreatSword()
 
 # exceptions
 class DeadException(Exception):

@@ -148,3 +148,6 @@ from . import weapons
 
 # consumables
 from . import consumables
+
+# loot functions
+from . import loot

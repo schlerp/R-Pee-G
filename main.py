@@ -1,17 +1,10 @@
+
 import sys
 try:
     import pyfiglet
 except ImportError:
     pyfiglet = None
-
-#from characters import Hero, Enemy, DeadException, WinException, EscapeException, WinBossException
-#from items import Dagger, BastardSword, MagicBlade, FireBlade, IceBlade, PoisonBlade, Bite
-#from items import LeatherBoots, LeatherChest, LeatherHelmet, LeatherLegs, SmallShield, Medkit, ConsumableExpiredException
-#from items import use_item
-#from mapping import Map, pick_rand_room, handle_move
-#from battle import battle
-#from interface import build_hero_avatar, get_hero_stats, text_centre, build_room_scene, do_intro, use_item_free
-#from tools import cls, pause
+    
 
 import characters
 import battle
@@ -20,29 +13,11 @@ import tools
 import world
 
 
+# screen width
+block_width = 35
+
+
 def main():
-    # define hero and enemy
-    me = characters.Hero(name='schlerp', hp=100, lvl=1)
-    me.weapon = items.weapons.BastardSword()
-    me.body.boots = items.armour.LeatherBoots()
-    me.body.chest = items.armour.LeatherChest()
-    me.body.head = items.armour.LeatherHelmet()
-    me.body.legs = items.armour.LeatherLegs()
-    me.body.shield = items.armour.SmallShield()
-    me.inventory.append(items.consumables.Medkit(quantity=3))
-    
-    height = 5
-    width = 5
-    
-    enemy_rooms = 10
-    loot_rooms = 10
-    
-    block_width = 35
-    
-    world_map = world.mapping.Map(width, height, loot_rooms, enemy_rooms)
-    
-    start_location = world.mapping.pick_rand_room(width, height)
-    me.location = start_location
     
     # figlet fonts
     if pyfiglet != None:
@@ -51,6 +26,59 @@ def main():
     
     # print intro
     tools.interface.do_intro()
+    
+    # get game setup
+    player_name, difficulty, starting_items = tools.interface.game_setup()
+    
+    # define hero
+    me = characters.Hero(name=player_name, hp=100, lvl=1)
+    
+    # apply difficulty
+    if difficulty == tools.interface.DIFF_EASY:
+        height = 5
+        width = 5
+        enemy_rooms = 5
+        loot_rooms = 15
+        
+    elif difficulty == tools.interface.DIFF_MEDIUM:
+        height = 7
+        width = 7
+        enemy_rooms = 15
+        loot_rooms = 15
+    
+    elif difficulty == tools.interface.DIFF_HARD:
+        height = 8
+        width = 8
+        enemy_rooms = 50
+        loot_rooms = 5
+    
+    
+    if starting_items == tools.interface.ITEMS_FEW:
+        me.weapon = items.weapons.HandAxe()
+        me.body.head = items.armour.LeatherHelmet()
+        me.inventory.append(items.consumables.Medkit(quantity=1))
+        
+    elif starting_items == tools.interface.ITEMS_MEDIUM:
+        me.weapon = items.weapons.Scimitar()
+        me.body.chest = items.armour.LeatherChest()
+        me.body.head = items.armour.LeatherHelmet()
+        me.body.legs = items.armour.LeatherLegs()
+        me.body.shield = items.armour.SmallShield()
+        me.inventory.append(items.consumables.Medkit(quantity=3))
+        
+    elif starting_items == tools.interface.ITEMS_LOTS:
+        me.weapon = items.weapons.Katana()
+        me.body.boots = items.armour.LeatherBoots()
+        me.body.chest = items.armour.LeatherChest()
+        me.body.head = items.armour.LeatherHelmet()
+        me.body.legs = items.armour.LeatherLegs()
+        me.body.shield = items.armour.SmallShield()
+        me.inventory.append(items.consumables.Medkit(quantity=5))
+    
+    world_map = world.mapping.Map(width, height, loot_rooms, enemy_rooms)
+    
+    start_location = world.mapping.pick_rand_room(width, height)
+    me.location = start_location
     
     try:
         while True:

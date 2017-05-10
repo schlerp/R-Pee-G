@@ -15,6 +15,7 @@ class Consumable(items.Item):
         print('{} tries to use {}...'.format(character.name, self.name))
         if not self.expired:
             self.do_action(character, ai)
+            self._consume()
         else:
             raise ConsumableExpiredException
     
@@ -81,7 +82,7 @@ class GoldenApple(Consumable):
         description = self.__doc__
         super().__init__('Golden Apple', description, quantity=1)
         self.expired = False
-        self.restore_hp = 50
+        self.restore_hp = 100
     
     def do_action(self, player, ai=None):
         hp_before = character.hp

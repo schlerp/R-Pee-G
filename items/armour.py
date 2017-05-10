@@ -170,14 +170,14 @@ class PlateBoots(Armour):
 class SmallShield(Armour):
     '''a small shield'''
     def __init__(self):
-        name = 'Helmet'
+        name = 'Small Shield'
         super().__init__(name=name, body_part=Shield(), physical=15, quality=10, magic=10, fire=10, 
                          ice=10, poison=10, description=self.__doc__)
 
 class MidShield(Armour):
     '''a medium shield'''
     def __init__(self):
-        name = 'Helmet'
+        name = 'Mid Shield'
         super().__init__(name=name, body_part=Shield(), physical=25, quality=15, magic=15, fire=15, 
                          ice=15, poison=15, description=self.__doc__)
 

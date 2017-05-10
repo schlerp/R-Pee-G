@@ -66,6 +66,58 @@ def do_intro():
     tools.utils.cls()
 
 
+# difficulties
+DIFF_EASY = 'easy'
+DIFF_MEDIUM = 'medium'
+DIFF_HARD = 'hard'
+
+# starting item count
+ITEMS_FEW = 'few'
+ITEMS_MEDIUM = 'medium'
+ITEMS_LOTS = 'lots'
+
+def game_setup():
+    '''asks a few questions and returns the results for game init'''
+    tools.utils.cls()
+    print('Please choose difficulty:')
+    difficulty = choose_from_list([DIFF_EASY,
+                                   DIFF_MEDIUM,
+                                   DIFF_HARD], 0)
+    if difficulty == 0:
+        # high loot rooms, less enemies
+        difficulty = DIFF_EASY
+    elif difficulty == 1:
+        # balanced loot and ememies
+        difficulty == DIFF_MEDIUM
+    elif difficulty == 2:
+        # few loot rooms, lots of enemies
+        difficulty == DIFF_HARD
+    
+    tools.utils.cls()
+    print('Please choose starting item count:')
+    starting_items = choose_from_list([ITEMS_FEW,
+                                   ITEMS_MEDIUM,
+                                   ITEMS_LOTS], 1)
+    if starting_items == 0:
+        # high loot rooms, less enemies
+        starting_items = ITEMS_FEW
+    elif starting_items == 1:
+        # balanced loot and ememies
+        starting_items = ITEMS_MEDIUM
+    elif starting_items == 2:
+        # few loot rooms, lots of 
+        starting_items = ITEMS_LOTS
+    
+    tools.utils.cls()
+    print('What is your name?')
+    default_name = 'derp'
+    name = input('[{}]>>> '.format(default_name))
+    if name == '':
+        name = default_name
+    return name, difficulty, starting_items
+    
+    
+
 def text_block(text, force_width=False):
     '''turns multiline string into text block'''
     _max = 0
@@ -201,13 +253,18 @@ class NotValidChoice(Exception):
     '''when a non valid choice is chosen'''
     pass
 
-def choose_from_list(iterable):
+def choose_from_list(iterable, default=None):
     choice_max = len(iterable) - 1
     for index, name in enumerate(iterable):
         print('[{}] {}'.format(index, str(name)))
     print('Select number:')
     while True:
-        choice = input('>>> ')
+        if default == None:
+            choice = input('>>> ')
+        else:
+            choice = input('[{}]>>> '.format(default))
+            if choice == '':
+                return default
         try:
             choice = int(choice)
             if choice > choice_max:

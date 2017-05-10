@@ -46,7 +46,7 @@ class SmallSword(Weapon):
         super().__init__(name, 25, 10, description=self.__doc__)
 
 class LongSword(Weapon):
-    '''a small sword weapon'''
+    '''a long sword weapon'''
     def __init__(self):
         name = 'Long Sword'
         super().__init__(name, 40, 25, description=self.__doc__)
@@ -69,34 +69,39 @@ class Katana(Weapon):
         name = 'Katana'
         super().__init__(name, 50, 40, description=self.__doc__)
 
-class BastardSword(Weapon):
+class GreatSword(Weapon):
     '''a big fuck-off sword, always high damage'''
     def __init__(self):
-        name = 'Bastard Sword'
+        name = 'Great Sword'
         super().__init__(name, 100, 20, description=self.__doc__)
 
+class BastardSword(Weapon):
+    '''a bigger fuck-off sword, less reliable but higher damage'''
+    def __init__(self):
+        name = 'Bastard Sword'
+        super().__init__(name, 125, 50, description=self.__doc__)
 
 
 class MagicBlade(Weapon):
     '''a blade imbued with magic'''
     def __init__(self):
         name = 'Magic Blade'
-        super().__init__(name, 15, 15, magic=25, description=self.__doc__)
+        super().__init__(name, 100, 100, magic=50, description=self.__doc__)
 
 class FireBlade(Weapon):
     '''a burning blade'''
     def __init__(self):
         name = 'Fire Blade'
-        super().__init__(name, 15, 15, fire=25, description=self.__doc__)
+        super().__init__(name, 100, 100, fire=50, description=self.__doc__)
 
 class IceBlade(Weapon):
     '''a blade made of ice'''
     def __init__(self):
         name = 'Ice Blade'
-        super().__init__(name, 15, 15, ice=25, description=self.__doc__)
+        super().__init__(name, 100, 100, ice=50, description=self.__doc__)
 
 class PoisonBlade(Weapon):
     '''a blade tipped with poison'''
     def __init__(self):
         name = 'Poison Blade'
-        super().__init__(name, 15, 15, poison=25, description=self.__doc__)
+        super().__init__(name, 100, 100, poison=50, description=self.__doc__)

@@ -30,8 +30,17 @@ def init_rooms(width, height, loot=10, enemies=10, vendors=2, boss=1):
     for i in range(enemies):
         current_room = pick_rand_room(width, height, blacklist=replaced_rooms)
         replaced_rooms.append(current_room)
-        loot_amount = randint(1, 50)
-        loot = items.consumables.Gold(quantity=loot_amount)
+        loot_choice = randint(0,99)
+        if loot_choice < 50:
+            # low loot
+            loot = items.loot.low_loot()
+        if loot_choice < 85:
+            # mid loot
+            loot = items.loot.mid_loot()
+        else:
+            # high loot
+            loot = items.loot.high_loot()
+            
         rooms[current_room.x][current_room.y] = world.world.Room(x=current_room.x, 
                                                                  y=current_room.y,
                                                                  name='loot room ({},{})'.format(current_room.x, current_room.y),
@@ -43,10 +52,12 @@ def init_rooms(width, height, loot=10, enemies=10, vendors=2, boss=1):
         current_room = pick_rand_room(width, height, blacklist=replaced_rooms)
         replaced_rooms.append(current_room)
         enemy_type = randint(0,99)
-        if enemy_type < 75:
+        if enemy_type < 50:
             enemy = characters.Orc()
-        else:
+        elif enemy_type < 85:
             enemy = characters.Golem()
+        else:
+            enemy = characters.BlackKnight()
         rooms[current_room.x][current_room.y] = world.world.Room(x=current_room.x, 
                                                                  y=current_room.y,
                                                                  name='enemy room ({},{})'.format(current_room.x, current_room.y),
