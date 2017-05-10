@@ -116,13 +116,13 @@ def side_by_side(left, right, size=30, sep='   '):
 def build_hero_avatar(hero):
     '''scans hero equipment, renders character'''
     # head
-    if hero.body.head == 'Bare':
+    if str(hero.body.head) == 'Bare':
         _head = head_bare
     else:
         _head = head_armour
     
     # chest
-    if hero.body.chest == 'Bare':
+    if str(hero.body.chest) == 'Bare':
         _l_arm = l_arm_bare
         _r_arm = r_arm_bare
         _chest = chest_bare
@@ -132,13 +132,13 @@ def build_hero_avatar(hero):
         _chest = chest_armour
 
     # shield
-    if hero.body.shield == 'Bare':
+    if str(hero.body.shield) == 'Bare':
         _l_hand = l_hand_bare
     else:
         _l_hand = l_hand_armour
     
     # weapon
-    if hero.weapon == 'Fists':
+    if str(hero.weapon) == 'Fists':
         _r_hand = r_hand_bare
         _weapon = no_weapon
     else:
@@ -146,7 +146,7 @@ def build_hero_avatar(hero):
         _weapon = weapon
     
     # legs
-    if hero.body.legs == 'Bare':
+    if str(hero.body.legs) == 'Bare':
         _l_leg = l_leg_bare
         _r_leg = r_leg_bare
         _pelvis = pelvis_bare
@@ -156,7 +156,7 @@ def build_hero_avatar(hero):
         _pelvis = pelvis_armour
     
     # boots
-    if hero.body.boots == 'Bare':
+    if str(hero.body.boots) == 'Bare':
         _foot = foot_bare
     else:
         _foot = foot_armour
