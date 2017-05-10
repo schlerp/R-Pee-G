@@ -1,9 +1,8 @@
 from random import randint
 
-from character import DeadException, WinException, EscapeException
-from interface import build_hero_avatar, build_battle_scene, text_block
-from item import Consumable, ConsumableExpiredException, use_item
-from utils import cls, pause
+import characters
+import tools
+import items
 
 
 class ActionNotFound(Exception):
@@ -118,31 +117,17 @@ def get_action(_input):
         raise ActionNotFound()
 
 
-def battle_choose(default=''):
-    while True:
-        print('Current actions:')
-        for act in actions:
-            name_block = text_block("[{}]".format(act.name), 10)
-            print('  {} {}'.format(name_block, act.description))
-        print('')
-        try:
-            choice = input('[{}]>>> '.format(default))
-            return get_action(choice)
-        except ActionNotFound:
-            print('Action not found!')
-
-
 def battle(player, ai, boss=False):
     last_action = Attack()
     print('{} ({})  vs. {} ({})'.format(player.name, player.hp, ai.name, ai.hp))
-    pause('press retrun to start battle...')
+    tools.utils.pause('press retrun to start battle...')
     while True:
-        cls()
-        print(build_battle_scene(player, ai))
+        tools.utils.cls()
+        print(tools.interface.build_battle_scene(player, ai))
         print()
         
         if player.is_alive():
-            action = battle_choose(default=last_action)
+            action = tools.interface.battle_choose(default=last_action)
             
             # apply default
             if action == None:
@@ -158,7 +143,7 @@ def battle(player, ai, boss=False):
                 if ai.is_alive():
                     do_attack(ai, player, defending=True)
             if action.name == 'item':
-                use_item(player, ai)
+                items.use_item(player, ai)
             if action.name == 'run':
                 if randint(0,9) <= 2 :
                     raise EscapeException
@@ -168,12 +153,12 @@ def battle(player, ai, boss=False):
         last_action = action
 
         if not player.is_alive():
-            raise DeadException()
+            raise characters.DeadException()
         if not ai.is_alive():
             if boss:
-                raise WinBossException
+                raise characters.WinBossException
             else:
-                raise WinException
+                raise characters.WinException
             
         
-        pause()
+        tools.utils.pause()

@@ -1,15 +1,16 @@
 from random import randint
 
-from character import Orc, SimpleBoss
-from world import Room, Location, Direction
-from item import Gold
+import characters
+import world
+import items
+
 
 def pick_rand_room(width, height, blacklist=[]):
     '''selects a random room from the map'''
     while True:
         x = randint(0, width-1)
         y = randint(0, height-1)
-        choice = Location(x,y)
+        choice = world.world.Location(x,y)
         if choice not in blacklist:
             break
     return choice
@@ -21,7 +22,7 @@ def init_rooms(width, height, loot=10, enemies=10, vendors=2, boss=1):
     for i in range(height):
         row = []
         for j in range(width):
-            row.append(Room(j, i, 'empty room ({},{})'.format(j, i), 'An empty room, there is nothing of use here.'))
+            row.append(world.world.Room(j, i, 'empty room ({},{})'.format(j, i), 'An empty room, there is nothing of use here.'))
         rooms.append(row)
     replaced_rooms = []
     
@@ -30,35 +31,38 @@ def init_rooms(width, height, loot=10, enemies=10, vendors=2, boss=1):
         current_room = pick_rand_room(width, height, blacklist=replaced_rooms)
         replaced_rooms.append(current_room)
         loot_amount = randint(1, 50)
-        loot = Gold(quantity=loot_amount)
-        rooms[current_room.x][current_room.y] = Room(x=current_room.x, 
-                                                     y=current_room.y,
-                                                     name='loot room ({},{})'.format(current_room.x, current_room.y),
-                                                     description='A room with something abandoned on the floor',
-                                                     loot=[loot])
+        loot = items.consumables.Gold(quantity=loot_amount)
+        rooms[current_room.x][current_room.y] = world.world.Room(x=current_room.x, 
+                                                                 y=current_room.y,
+                                                                 name='loot room ({},{})'.format(current_room.x, current_room.y),
+                                                                 description='A room with something abandoned on the floor',
+                                                                 loot=[loot])
 
     # insert enemy rooms
     for i in range(enemies):
         current_room = pick_rand_room(width, height, blacklist=replaced_rooms)
         replaced_rooms.append(current_room)
-        enemy_hp = randint(10, 60)
-        enemy = Orc('Orc{}'.format(i), hp=enemy_hp)
-        rooms[current_room.x][current_room.y] = Room(x=current_room.x, 
-                                                     y=current_room.y,
-                                                     name='enemy room ({},{})'.format(current_room.x, current_room.y),
-                                                     description='A room with an enemy lurking!',
-                                                     enemies=[enemy])
+        enemy_type = randint(0,99)
+        if enemy_type < 75:
+            enemy = characters.Orc()
+        else:
+            enemy = characters.Golem()
+        rooms[current_room.x][current_room.y] = world.world.Room(x=current_room.x, 
+                                                                 y=current_room.y,
+                                                                 name='enemy room ({},{})'.format(current_room.x, current_room.y),
+                                                                 description='A room with an enemy lurking!',
+                                                                 enemies=[enemy])
     
     # insert boss room
     current_room = pick_rand_room(width, height, blacklist=replaced_rooms)
     replaced_rooms.append(current_room)
-    boss = SimpleBoss()
-    rooms[current_room.x][current_room.y] = Room(x=current_room.x, 
-                                                 y=current_room.y,
-                                                 name='Boss room ({},{})'.format(current_room.x, current_room.y),
-                                                 description='The boss awaits your challenge!',
-                                                 enemies=[boss], 
-                                                 boss=True)    
+    boss = characters.SimpleBoss()
+    rooms[current_room.x][current_room.y] = world.world.Room(x=current_room.x, 
+                                                             y=current_room.y,
+                                                             name='Boss room ({},{})'.format(current_room.x, current_room.y),
+                                                             description='The boss awaits your challenge!',
+                                                             enemies=[boss], 
+                                                             boss=True)    
     return rooms
 
 class Map(object):
@@ -102,16 +106,14 @@ def move(_map, player, direction):
         else:
             player.location.x += 1
 
-def print_directions():
-    Direction().print()  
 
 def handle_move(_map, player):
     while True:
         print("Please choose a direction to continue...")
-        print_directions()
+        world.world.print_directions()
         choice = input('>>> ')
         try:
-            direction = Direction().get(choice)
+            direction = world.world.Direction().get(choice)
             move(_map, player, direction)
             break
         except DirectionException:

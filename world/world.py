@@ -18,12 +18,13 @@ class Direction():
             return 'east'
         # no match found, return None
         return None
-    
-    def print(self):
-        print(self.up)
-        print(self.right)
-        print(self.down)
-        print(self.left)
+
+
+def print_directions():
+    print(Direction.up)
+    print(Direction.right)
+    print(Direction.down)
+    print(Direction.left)
 
 class Location(object):
     '''this is a location, basic x and y points'''

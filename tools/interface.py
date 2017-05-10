@@ -1,8 +1,11 @@
-import curses
-import pyfiglet
+try:
+    import pyfiglet
+except ImportError:
+    pyfiglet = None
 
-from item import Bare, Fists, ConsumableExpiredException, use_item
-from utils import cls, pause
+import items
+import tools
+import battle
 
 # template
 template = ''' {head}  
@@ -43,12 +46,13 @@ foot_armour = 'J'
 
 
 def do_intro():
-    fig_title = pyfiglet.Figlet(font='caligraphy')
-    cls()
-    print(fig_title.renderText('R Pee G'))
+    tools.utils.cls()
+    if pyfiglet != None:
+        fig_title = pyfiglet.Figlet(font='caligraphy')
+        print(fig_title.renderText('R Pee G'))
     print('R-Pee-G, a game by schlerp\n')
-    pause()
-    cls()
+    tools.utils.pause()
+    tools.utils.cls()
     print('\nwelcome to the game motherfucker!')
     print('---------------------------------\n')
     print('You have woken up in a a castle, you need to escape or face grave danger.')
@@ -65,8 +69,8 @@ def do_intro():
     print('    > etc...')
     print(' * boss fights')
     print(' * level progression and experience/skill trees')
-    pause()
-    cls()
+    tools.utils.pause()
+    tools.utils.cls()
 
 
 def text_block(text, force_width=False):
@@ -112,13 +116,13 @@ def side_by_side(left, right, size=30, sep='   '):
 def build_hero_avatar(hero):
     '''scans hero equipment, renders character'''
     # head
-    if isinstance(hero.body.head, Bare):
+    if hero.body.head == 'Bare':
         _head = head_bare
     else:
         _head = head_armour
     
     # chest
-    if isinstance(hero.body.chest, Bare):
+    if hero.body.chest == 'Bare':
         _l_arm = l_arm_bare
         _r_arm = r_arm_bare
         _chest = chest_bare
@@ -128,13 +132,13 @@ def build_hero_avatar(hero):
         _chest = chest_armour
 
     # shield
-    if isinstance(hero.body.shield, Bare):
+    if hero.body.shield == 'Bare':
         _l_hand = l_hand_bare
     else:
         _l_hand = l_hand_armour
     
     # weapon
-    if isinstance(hero.weapon, Fists):
+    if hero.weapon == 'Fists':
         _r_hand = r_hand_bare
         _weapon = no_weapon
     else:
@@ -142,7 +146,7 @@ def build_hero_avatar(hero):
         _weapon = weapon
     
     # legs
-    if isinstance(hero.body.legs, Bare):
+    if hero.body.legs == 'Bare':
         _l_leg = l_leg_bare
         _r_leg = r_leg_bare
         _pelvis = pelvis_bare
@@ -152,7 +156,7 @@ def build_hero_avatar(hero):
         _pelvis = pelvis_armour
     
     # boots
-    if isinstance(hero.body.boots, Bare):
+    if hero.body.boots == 'Bare':
         _foot = foot_bare
     else:
         _foot = foot_armour
@@ -191,14 +195,47 @@ def use_item_free(player):
             if choice == '':
                 choice = 'no'
             if check_boolean(choice) == 'yes':
-                cls()
-                use_item(player)
+                tools.cls()
+                items.use_item(player)
             elif check_boolean(choice) == 'no':
                 break
             else:
                 print('Unknown option! please choose yes or no')
-        except ConsumableExpiredException as e:
+        except items.ConsumableExpiredException as e:
             pass
+
+def choose_from_list(iterable):
+    choice_max = len(iterable) - 1
+    for index, name in enumerate(player.inventory):
+        print('[{}] {}'.format(index, str(name)))
+    print('Select number:')
+    while True:
+        choice = input('>>> ')
+        try:
+            choice = int(choice)
+            if choice > choice_max:
+                print('Choice outside of range (0-{})'.format(choice_max))
+        except ValueError as e:
+            print('Unknow option: {}'.format(choice))
+            pass
+        except KeyboardInterrupt:
+            print('User cancelled choice...')
+            return None
+    return choice
+
+def battle_choose(default=''):
+    while True:
+        print('Current actions:')
+        for act in battle.actions:
+            name_block = text_block("[{}]".format(act.name), 10)
+            print('  {} {}'.format(name_block, act.description))
+        print('')
+        try:
+            choice = input('[{}]>>> '.format(default))
+            return battle.get_action(choice)
+        except battle.ActionNotFound:
+            print('Action not found!')
+
 
 def build_battle_scene(player, ai, width=35):
     '''draws the battle scene'''
