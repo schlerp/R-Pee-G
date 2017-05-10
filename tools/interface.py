@@ -195,7 +195,7 @@ def use_item_free(player):
             if choice == '':
                 choice = 'no'
             if check_boolean(choice) == 'yes':
-                tools.cls()
+                tools.utils.cls()
                 items.use_item(player)
             elif check_boolean(choice) == 'no':
                 break
@@ -204,9 +204,13 @@ def use_item_free(player):
         except items.ConsumableExpiredException as e:
             pass
 
+class NotValidChoice(Exception):
+    '''when a non valid choice is chosen'''
+    pass
+
 def choose_from_list(iterable):
     choice_max = len(iterable) - 1
-    for index, name in enumerate(player.inventory):
+    for index, name in enumerate(iterable):
         print('[{}] {}'.format(index, str(name)))
     print('Select number:')
     while True:
@@ -214,14 +218,17 @@ def choose_from_list(iterable):
         try:
             choice = int(choice)
             if choice > choice_max:
-                print('Choice outside of range (0-{})'.format(choice_max))
+                raise NotValidChoice
+            return choice
         except ValueError as e:
             print('Unknow option: {}'.format(choice))
+            pass
+        except NotValidChoice:
+            print('Choice outside of range (0-{})'.format(choice_max))
             pass
         except KeyboardInterrupt:
             print('User cancelled choice...')
             return None
-    return choice
 
 def battle_choose(default=''):
     while True:

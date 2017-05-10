@@ -7,9 +7,10 @@ class ConsumableExpiredException(Exception):
     '''attempted to use expired consumable'''
     pass
 
+
 def use_item(player, ai=None):
     try:
-        choice = tools.choose_from_list(player.inventory)
+        choice = tools.interface.choose_from_list(player.inventory)
         item = player.inventory[int(choice)]
         item.use(player, ai)
     except ConsumableExpiredException as e:
