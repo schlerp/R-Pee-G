@@ -50,25 +50,18 @@ def do_intro():
     if pyfiglet != None:
         fig_title = pyfiglet.Figlet(font='caligraphy')
         print(fig_title.renderText('R Pee G'))
-    print('R-Pee-G, a game by schlerp\n')
+    print('\n\nR-Pee-G, a game by schlerp\n\n')
     tools.utils.pause()
     tools.utils.cls()
     print('\nwelcome to the game motherfucker!')
     print('---------------------------------\n')
-    print('You have woken up in a a castle, you need to escape or face grave danger.')
-    print('Battle your way out if you can... **INSERT EVIL LAUGH!**\n')
+    print('You have woken up in a a castle') 
+    print('you need to escape or face grave danger.')
+    print('Battle your way out if you can...\n')
     print('how it works:')
     print('Upon antering a room, you may be attacked if enemy present.')
     print('Once enemy has been dealt with you will auto-loot the room.')
-    print('Once room has been looted you will be able to make a choice as to which direction to head.\n')
-    print('Not implemented:')
-    print(' * getting items from inventory')
-    print('    > using')
-    print('    > equipping ')
-    print('    > dropping ')
-    print('    > etc...')
-    print(' * boss fights')
-    print(' * level progression and experience/skill trees')
+    print('after you will chooce which direction to head.\n')
     tools.utils.pause()
     tools.utils.cls()
 
@@ -93,12 +86,12 @@ def text_block(text, force_width=False):
     
 def text_centre(text, width):
     '''centres a text'''
-    text_block = text_block(text)
-    text_width = len(text_block.split('\n')[0])
+    t_block = text_block(text)
+    text_width = len(t_block.split('\n')[0])
     pre_len = (width - text_width) // 2
     post_len = width - pre_len
     ret = ''
-    for row in text_block.split('\n'):
+    for row in t_block.split('\n'):
         ret += ' '*pre_len + row + ' '*post_len + '\n'
     return ret
     
@@ -239,7 +232,7 @@ def battle_choose(default=''):
             acts += name_block
         print(acts)
         try:
-            choice = input(' [{}]>>> '.format(default))
+            choice = input('[{}]>>> '.format(default))
             return battle.get_action(choice)
         except battle.ActionNotFound:
             print('Action not found!')

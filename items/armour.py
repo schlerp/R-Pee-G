@@ -55,7 +55,7 @@ class Armour(items.Equipment):
     def use(self, player, ai=None):
         for index, _item in enumerate(player.inventory):
             if isinstance(_item, type(self)):
-                new_armour = self.inventory.pop(index)
+                new_armour = player.inventory.pop(index)
                 if new_armour.body_part == AnyPart():
                     choice = tools.interface.choose_from_list(body_parts)
                     if choice == None:
@@ -63,7 +63,7 @@ class Armour(items.Equipment):
                     body_part = body_parts[choice]
                 else:
                     body_part = new_armour.body_part
-                old_item = player.body.replace_equipment(b_part, new_armour)
+                old_item = player.body.replace_equipment(body_part, new_armour)
                 player.add_item(old_item)
 
 

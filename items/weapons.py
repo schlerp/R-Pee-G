@@ -12,7 +12,7 @@ class Weapon(items.Equipment):
             player.inventory.append(player.weapon)
         for index, _item in enumerate(player.inventory):
             if isinstance(_item, type(self)):
-                player.weapon = self.inventory.pop(index)
+                player.weapon = player.inventory.pop(index)
 
 
 class Fists(Weapon):

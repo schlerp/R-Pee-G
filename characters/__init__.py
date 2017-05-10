@@ -14,29 +14,29 @@ class Body(object):
         self.boots = boots
 
     def get_equipment(self, body_part):
-        if body_part == 'head':
+        if str(body_part) == 'head':
             return self.head
-        elif body_part == 'chest':
+        elif str(body_part) == 'chest':
             return self.chest
-        elif body_part == 'legs':
+        elif str(body_part) == 'legs':
             return self.legs
-        elif body_part == 'boots':
+        elif str(body_part) == 'boots':
             return self.boots
-        elif body_part == 'shield':
+        elif str(body_part) == 'shield':
             return self.shield
         return None
     
     def set_equipment(self, body_part, _item):
         if _item.body_part == body_part:
-            if body_part == 'head':
+            if str(body_part) == 'head':
                 self.head == _item
-            elif body_part == 'chest':
+            elif str(body_part) == 'chest':
                 self.chest == _item
-            elif body_part == 'legs':
+            elif str(body_part) == 'legs':
                 self.legs == _item
-            elif body_part == 'boots':
+            elif str(body_part) == 'boots':
                 self.boots == _item
-            elif body_part == 'shield':
+            elif str(body_part) == 'shield':
                 self.shield == _item
             else:
                 return False
