@@ -91,14 +91,14 @@ def text_block(text, force_width=False):
         ret += '\n'
     return ret[0:-1]
     
-def text_centre(avatar, width):
-    '''centres an avatar'''
-    avatar_block = text_block(avatar)
-    avatar_width = len(avatar_block.split('\n')[0])
-    pre_len = (width - avatar_width) // 2
-    post_len = width - pre_len 
+def text_centre(text, width):
+    '''centres a text'''
+    text_block = text_block(text)
+    text_width = len(text_block.split('\n')[0])
+    pre_len = (width - text_width) // 2
+    post_len = width - pre_len
     ret = ''
-    for row in avatar_block.split('\n'):
+    for row in text_block.split('\n'):
         ret += ' '*pre_len + row + ' '*post_len + '\n'
     return ret
     
@@ -110,7 +110,7 @@ def side_by_side(left, right, size=30, sep='   '):
     ret = ''
     for line, text in enumerate(left_block.split('\n')):
         ret += text + sep + right_block.split('\n')[line] + '\n'
-    return ret
+    return ret[0:-1]
 
 
 def build_hero_avatar(hero):
@@ -233,12 +233,13 @@ def choose_from_list(iterable):
 def battle_choose(default=''):
     while True:
         print('Current actions:')
+        acts = ''
         for act in battle.actions:
-            name_block = text_block("[{}]".format(act.name), 10)
-            print('  {} {}'.format(name_block, act.description))
-        print('')
+            name_block = text_block(" [{}] ".format(act.name), 10)
+            acts += name_block
+        print(acts)
         try:
-            choice = input('[{}]>>> '.format(default))
+            choice = input(' [{}]>>> '.format(default))
             return battle.get_action(choice)
         except battle.ActionNotFound:
             print('Action not found!')
@@ -255,7 +256,7 @@ def build_battle_scene(player, ai, width=35):
     ret += player_stats
     ret += text_centre('vs.', width)
     ret += str(ai) + '\n'
-    ret += ai_stats +'\n'
+    ret += ai_stats
     #ret += side_by_side(player_stats, ai_stats, size=width)
     player_avatar = build_hero_avatar(player)
     ai_avatar = build_hero_avatar(ai)
