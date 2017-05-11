@@ -13,8 +13,8 @@ import tools
 import world
 
 
-# screen width
-block_width = 35
+# screen width (for kindle)
+block_width = 48
 
 
 def main():
@@ -95,22 +95,23 @@ def main():
                             if pyfiglet != None:
                                 print(fig_win.renderText('You defeated!'))
                             else:
-                                print('You Defeated!')
+                                print(tools.interface.text_centre('You Defeated!', block_width))
                             # enemy drops loot
                             while len(enemy.loot) > 0:
                                 _loot = enemy.loot.pop()
                                 room.loot.append(_loot)
-                                print('{} dropped {}'.format(enemy.name, _loot))                        
+                                print(tools.interface.text_centre('{} dropped {}'.format(enemy.name, _loot), 
+                                                                  block_width))
                             room.description = '{} lays dead on the floor Dead!'.format(enemy.name)
                             tools.utils.pause()
                         except characters.DeadException:
                             if pyfiglet != None:
                                 print(fig_death.renderText('You died!'))
                             else:
-                                print('You Died!')
+                                print(tools.interface.text_centre('You Died!', block_width))
                             sys.exit(2)
                         except characters.EscapeException:
-                            print('You ran from the battle!')
+                            print(tools.interface.text_centre('You ran from the battle!', block_width))
                             tools.utils.pause()
             if room.loot:
                 room.description += '\n{} '.format(me.name)
@@ -118,7 +119,8 @@ def main():
                 while len(room.loot) > 0:
                     _loot = room.loot.pop()
                     me.add_item(_loot)
-                    print('{} found {}'.format(me.name, _loot))
+                    print(tools.interface.text_centre('{} found {}'.format(me.name, _loot), 
+                                                      block_width))
                     room.description += '[{}] '.format(_loot)
                 tools.utils.pause()
             
@@ -147,7 +149,7 @@ def main():
             print(fig_boss_win.renderText('You'))
             print(fig_boss_win.renderText('Win'))
         else:
-            print('\n\nYOU WON!!!!!\n\n')
+            print(tools.interface.text_centre('\n\nYOU WON!!!!!\n\n', block_width))
         sys.exit(0)
 
 

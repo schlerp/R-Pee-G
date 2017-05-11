@@ -302,11 +302,11 @@ def build_battle_scene(player, ai, width=35):
     player_stats = get_hero_stats(player)
     ai_stats = get_hero_stats(ai)
     ret = ''
-    ret += str(player) + '\n'
-    ret += player_stats
-    ret += text_centre('vs.', width)
-    ret += str(ai) + '\n'
-    ret += ai_stats
+    ret += text_centre(str(player), width) + '\n'
+    ret += text_centre(player_stats, width) + '\n'
+    ret += text_centre('vs.', width) + '\n'
+    ret += text_centre(str(ai), width) + '\n'
+    ret += text_centre(ai_stats, width) + '\n'
     #ret += side_by_side(player_stats, ai_stats, size=width)
     player_avatar = build_hero_avatar(player)
     ai_avatar = build_hero_avatar(ai)
@@ -318,10 +318,10 @@ def build_battle_scene(player, ai, width=35):
 
 def build_room_scene(player, room, width=35):
     '''draws the current room/player stats'''
-    ret = str(player) + '\n'
-    ret += get_hero_stats(player) + '\n'
+    ret = text_centre(str(player), width) + '\n'
+    ret += text_centre(get_hero_stats(player), width) + '\n'
     ret += text_centre(build_hero_avatar(player), width) + '\n'
-    ret += get_hero_inventory(player) + '\n\n'
-    ret += '[' + room.name + ']\n'
-    ret += room.description + '\n'
+    ret += text_centre(get_hero_inventory(player), width) + '\n'
+    ret += text_centre('[' + room.name + ']', width) + '\n'
+    ret += text_centre(room.description, width) + '\n'
     return ret
